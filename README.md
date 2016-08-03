@@ -1,2 +1,2 @@
 # zero_harvest
-Small HTML5 and three.js particle based game.
+Small HTML5 and Phaser.io particle based game coming soon.
