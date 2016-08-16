@@ -2,9 +2,6 @@ function Universe() {
 	this.particles = game.add.group();
 	this.fields = game.add.group();
 	this.emitters = game.add.group();
-  //this.scale.setTo(1);
-  this.mapScaleTarget = 1;
-  this.bounds = Phaser.Rectangle.clone(game.world.bounds);
 }
 
 Universe.prototype.addEmitter = function(field, key) {
@@ -31,8 +28,7 @@ Universe.prototype.moveParticles = function() {
 
   	// Else update its velocity
   	else {
-    	// Update velocities and accelerations to account for the fields and then move the particles
-    	var collide = particle.move(this.fields); //TODO account for all fields
+      var collide = particle.move(this.fields);
   		//console.log(collide);
   		if (collide >= 0) {
   			//console.log("collided with " + collide);
@@ -46,13 +42,4 @@ Universe.prototype.moveParticles = function() {
 
 Universe.prototype.update = function() {
 	this.moveParticles();
-	/*for (var i = 0; i < this.fields.length; i++)
-		this.fields.getAt(i).update();
-
-  for (var i = 0; i < this.emitters.length; i++)
-    this.emitters.getAt(i).update();*/
-};
-
-Universe.prototype.absorbParticles = function(clicked) {
-  this.fields.getAt(clicked).mass = 75;
 };

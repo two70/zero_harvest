@@ -5,8 +5,8 @@ Field = function(point, mass, key) {
 	this.anchor.setTo(0.5,0.5);
 	this.tint = 0xff1100;
 	this.scale.set(this.mass * 0.01);
-	//this.velocity = Vector(0,0);
-	//this.acceleration = Vector(0,0);
+
+	this.absorbing = false;
 };
 
 Field.prototype = Object.create(Phaser.Sprite.prototype);

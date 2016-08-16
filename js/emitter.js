@@ -9,7 +9,6 @@ Emitter = function(universeParticles, field, key) {
   this.particles = universeParticles;
   this.anchor.setTo(0.5,0.5);
   this.scale.set(0.2);
-  this.particleMass = 0.01;
   this.emissionRate = 10;
   this.maxParticles = 5000;
   this.tint = 0x00ffff;
@@ -23,6 +22,7 @@ Emitter.prototype.constructor = Emitter;
 Emitter.prototype.emitParticle = function() {
   if (this.particles.length >= this.maxParticles) return;
 
+  this.emissionRate = 200 / this.field.mass;
   for (var j = 0; j < this.emissionRate; j++) {
     // Use an angle randomized over the spread so we have more of a "spray"
     var angle = this.emitVelocity.getAngle() + this.spread - (Math.random() * this.spread * 2);
@@ -36,7 +36,7 @@ Emitter.prototype.emitParticle = function() {
     // New velocity based off of the calculated angle and magnitude
     var velocity = Vector.fromAngle(angle, magnitude);
 
-    var particle = new Particle('particle', position, velocity, this.particleMass);
+    var particle = new Particle('particle', position, velocity);
     particle.tint = 0x0000ff;
     this.particles.add(particle);
   }
@@ -49,10 +49,10 @@ Emitter.prototype.updateField = function(field) {
 Emitter.prototype.update = function() {
   var x = this.field.position.x - this.position.x;
   var y = this.field.position.y - this.position.y;
-  var distanceField = Math.sqrt(x*x+y*y);
+  var distanceToField = Math.sqrt(x*x+y*y);
 
-  if (distanceField <= 105) {
-    var radius = 100;//this.field.mass * 5;
+  if (distanceToField <= 105) {
+    var radius = 100;
     this.position.x = this.field.position.x + radius * Math.cos(this.roangle * Math.PI / 180);
     this.position.y = this.field.position.y + radius * Math.sin(this.roangle * Math.PI / 180);
     this.roangle += 0.2;
@@ -61,8 +61,8 @@ Emitter.prototype.update = function() {
   }
   else {
     var normalized = new Vector();
-    normalized.x = x / distanceField;
-    normalized.y = y / distanceField;
+    normalized.x = x / distanceToField;
+    normalized.y = y / distanceToField;
     this.position.add(normalized);
     this.roangle = Math.atan2(this.position.y-this.field.position.y, this.position.x-this.field.position.x) * (180 / Math.PI);
   }

@@ -3,7 +3,10 @@ var width = 1200;
 var height = 900;
 var game = new Phaser.Game(width, height, Phaser.AUTO, 'container', { preload: preload, create: create, update: update, render: render });
 
+var clicked = -1;
 var player;
+var addEmitButton;
+var absorbPartButton;
 var universe;
 
 function preload() {
@@ -26,15 +29,19 @@ function create() {
     universe.fields.onChildInputOver.add(onOver, this);
     universe.fields.onChildInputUp.add(onUp, this);
     universe.fields.onChildInputDown.add(onDown, this);
-    universe.fields.onChildInputOut.add(onOut, this);   
+    universe.fields.onChildInputOut.add(onOut, this);
+
+    addEmitButton = game.add.button(25, 50, 'button', addEmitter, this);
+    addEmitButton.scale.set(0.1);
+    absorbParticles = game.add.button(25, 100, 'button', absorbParticles, this);
+    absorbParticles.scale.set(0.1);
+
+
 }
 
 function update() {
     universe.update();
 	
-    if (game.input.activePointer.isDown && clicked >= 0) {
-        universe.absorbParticles(clicked);
-    }
 	// movement
     if (game.input.keyboard.isDown(Phaser.Keyboard.UP)) {
       game.camera.y -= 5;
@@ -76,7 +83,9 @@ function render() {
 }
 
 function mouseWheel(event) {
-    var delta = game.input.mouse.wheelDelta / 10;
+    // TODO: Get zoom working properly
+
+    /*var delta = game.input.mouse.wheelDelta / 10;
     if (game.camera.scale.x + delta > 0.3 && game.camera.scale.x + delta < 5.1) {
         game.camera.scale.set(game.camera.scale.x + delta);
         if (delta < 0) {
@@ -87,11 +96,18 @@ function mouseWheel(event) {
             game.camera.x += 100;
             game.camera.y += 100;
         }
-    }
+    }*/
 }
 
 function addEmitter() {
-    universe.addEmitter(universe.fields.getAt(0), 'particle');
+    universe.addEmitter(universe.fields.getAt(clicked), 'particle');
+}
+
+function absorbParticles() {
+    if (universe.fields.getAt(clicked).absorbing == false)
+        universe.fields.getAt(clicked).absorbing = true;
+    else
+        universe.fields.getAt(clicked).absorbing = false;
 }
 
 function onOver(sprite) {
@@ -99,23 +115,11 @@ function onOver(sprite) {
 }
 
 function onDown(sprite) {
-    var thisClick = game.time.now;
-    if (thisClick - lastClicked < 500) {
-        addEmitter();
-    }
-
-    if (thisClick - lastClicked > 1000) {
-        clicked = universe.fields.getIndex(sprite);
-        console.log(thisClick + " " + lastClicked);
-    }
-    lastClicked = thisClick;
-    console.log(clicked);
+    clicked = universe.fields.getIndex(sprite);
+    //console.log(clicked);
 }
 
-var clicked = -1;
-var lastClicked = 0;
 function onUp(sprite, pointer) {
-    clicked = -1;
 }
 
 function onOut(sprite) {
