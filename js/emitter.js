@@ -5,13 +5,13 @@ Emitter = function(universeParticles, field, key) {
   this.position = new Vector(field.position.x, field.position.y); // Position Vector
   this.velocity = new Vector(0,0);
   this.emitVelocity = new Vector(0.1,0.1); // Vector
-  this.spread = Math.PI; // 
+  this.spread = Math.PI / 2; // 
   this.particles = universeParticles;
   this.anchor.setTo(0.5,0.5);
   this.scale.set(0.2);
   this.emissionRate = 10;
   this.maxParticles = 5000;
-  this.tint = 0x00ffff;
+  this.tint = 0x555555;
   this.roangle = 0;
   game.time.events.loop(Phaser.Timer.SECOND, this.emitParticle, this);
 };
@@ -24,18 +24,11 @@ Emitter.prototype.emitParticle = function() {
 
   this.emissionRate = 200 / this.field.mass;
   for (var j = 0; j < this.emissionRate; j++) {
-    // Use an angle randomized over the spread so we have more of a "spray"
-    var angle = this.emitVelocity.getAngle() + this.spread - (Math.random() * this.spread * 2);
-
-    // The magnitude of the emitter's velocity
-    var magnitude = this.emitVelocity.getMagnitude();
-
     // The emitter's position
     var position = new Vector(this.position.x, this.position.y);
 
-    // New velocity based off of the calculated angle and magnitude
-    var velocity = Vector.fromAngle(angle, magnitude);
-
+    // New random velocity for each particle
+    var velocity = new Vector((Math.random() * 2 - 1) / 10,(Math.random() * 2 - 1) / 10);
     var particle = new Particle('particle', position, velocity);
     particle.tint = 0x0000ff;
     this.particles.add(particle);
@@ -55,10 +48,24 @@ Emitter.prototype.update = function() {
     var radius = 100;
     this.position.x = this.field.position.x + radius * Math.cos(this.roangle * Math.PI / 180);
     this.position.y = this.field.position.y + radius * Math.sin(this.roangle * Math.PI / 180);
-    this.roangle += 0.2;
+
+    if (this.field.emitters.length > 1 && this.field.emitters.getAt(0) != this) {
+      var angleOffset = this.roangle - this.field.emitters.getAt(0).roangle;
+      if (angleOffset < 0)
+        angleOffset += 360;
+      //console.log(angleOffset);
+      if (angleOffset < 175 || angleOffset > 185)
+        this.roangle += 0.6;
+      else
+        this.roangle += 0.2;
+    }
+    else
+      this.roangle += 0.2;
+  
     if(this.roangle > 360) this.roangle = 0;
     
   }
+
   else {
     var normalized = new Vector();
     normalized.x = x / distanceToField;

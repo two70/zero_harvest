@@ -3,9 +3,11 @@ Field = function(point, mass, key) {
 	this.position = new Vector(point.x, point.y);
 	this.mass = mass || 100;
 	this.anchor.setTo(0.5,0.5);
-	this.tint = 0xff1100;
+	this.tint = 0xff5500;
 	this.scale.set(this.mass * 0.01);
 	this.absorbing = false;
+
+	this.emitters = game.add.group();
 };
 
 Field.prototype = Object.create(Phaser.Sprite.prototype);
