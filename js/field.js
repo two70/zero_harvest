@@ -5,7 +5,6 @@ Field = function(point, mass, key) {
 	this.anchor.setTo(0.5,0.5);
 	this.tint = 0xff1100;
 	this.scale.set(this.mass * 0.01);
-
 	this.absorbing = false;
 };
 
@@ -17,8 +16,6 @@ Field.prototype.setMass = function(mass) {
 };
 
 Field.prototype.move = function(acceleration) {
-	//this.acceleration = acceleration;
-	//this.velocity.add(acceleration)
 };
 
 Field.prototype.update = function() {

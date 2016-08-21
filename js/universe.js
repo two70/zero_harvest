@@ -15,8 +15,11 @@ Universe.prototype.addEmitter = function(field, key) {
 Universe.prototype.addField = function(point, mass, key) {
 	var field = new Field(point, mass, key);
 	this.fields.add(field);
+  var ellipse = game.add.graphics();
+  ellipse.lineStyle(1, 0x555555);
+  ellipse.drawEllipse(point.x, point.y, mass+5, mass);
 };
-
+  
 Universe.prototype.moveParticles = function() {
 	for (var i = 0; i < this.particles.length; i++) {
   	var particle = this.particles.getAt(i);
