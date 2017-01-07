@@ -58,6 +58,9 @@ function create() {
 
   selectedText = game.add.text(300 , 10, "", style);
   selectedText.fixedToCamera = true;
+
+  universe.addEmitter(0, 'particle');
+  universe.addEmitter(1, 'particle');
 }
 
 function update() {
