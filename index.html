@@ -36,7 +36,17 @@
     <div id="container"></div>
    
     </div>
-
+    <script id="shader" type="shader">
+      precision mediump float;
+      
+      uniform vec2 mouse;
+      uniform vec2 resolution;
+      uniform float time;
+      void main(){
+       gl_FragColor = vec4(sin(time),mouse.x/resolution.x,mouse.y/resolution.y,1.0);
+      
+      }
+    </script>
     <script src="js/phaser.min.js"></script>
     <script src="js/universe.js"></script>
     <script src="js/vector.js"></script>

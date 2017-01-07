@@ -1,7 +1,7 @@
 
 var width = 1200;
 var height = 900;
-var game = new Phaser.Game(width, height, Phaser.AUTO, 'container', { preload: preload, create: create, update: update, render: render });
+var game = new Phaser.Game(width, height, Phaser.WEBGL, 'container', { preload: preload, create: create, update: update, render: render });
 
 var clicked = -1;
 var awaitingDest = false;
@@ -19,13 +19,22 @@ function preload() {
   game.load.image('particle', 'img/particle.png');
   game.load.image('planet', 'img/planet.png');
   game.load.image('button', 'img/button.png');
+
+  //game.load.script('filter', 'https://cdn.rawgit.com/photonstorm/phaser/master/filters/Fire.js');
 }
 
 function create() {
+
   universe = new Universe();
   universe.fields.inputEnableChildren = true;
-  universe.addField(new Phaser.Point(200, 200), 20, 'particle');
-  universe.addField(new Phaser.Point(1000, 450), 10, 'particle');
+  
+  for (var i = 0; i < 6; i++ ) {
+    universe.addField(new Vector(Math.random()*width, Math.random()*height), 30, 'particle');
+    universe.addEmitter(universe.fields.getAt(i), 'particle');
+    universe.fields.getAt(i).emitters.getAt(0).roangle = Math.random()*360;
+  }
+  //universe.addField(new Phaser.Point(200, 200), 20, 'particle');
+  //universe.addField(new Phaser.Point(200, 450), 30, 'particle');
 
   // set our world size to be bigger than the window so we can move the camera
   game.world.setBounds(0,0, 5000, 5000);

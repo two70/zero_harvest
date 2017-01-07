@@ -28,7 +28,7 @@ Emitter.prototype.emitParticle = function() {
     var position = new Vector(this.position.x, this.position.y);
 
     // New random velocity for each particle
-    var velocity = new Vector((Math.random() * 2 - 1) / 10,(Math.random() * 2 - 1) / 10);
+    var velocity = new Vector((Math.random() * 2 - 1) / 10, (Math.random() * 2 - 1) / 10);
     var particle = new Particle('particle', position, velocity);
     particle.tint = 0x0000ff;
     this.particles.add(particle);
@@ -44,8 +44,8 @@ Emitter.prototype.update = function() {
   var y = this.field.position.y - this.position.y;
   var distanceToField = Math.sqrt(x*x+y*y);
 
-  if (distanceToField <= 105) {
-    var radius = 100;
+  if (distanceToField <= 55) {
+    var radius = 50;
     this.position.x = this.field.position.x + radius * Math.cos(this.roangle * Math.PI / 180);
     this.position.y = this.field.position.y + radius * Math.sin(this.roangle * Math.PI / 180);
 

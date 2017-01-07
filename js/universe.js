@@ -5,10 +5,11 @@ function Universe() {
 
 Universe.prototype.addField = function(point, mass, key) {
 	var field = new Field(point, mass, key);
+  //var field = game.add.sprite(point.x, point.y, key);
+  
+
+
 	this.fields.add(field);
-  /*var ellipse = game.add.graphics();
-  ellipse.lineStyle(1, 0x555555);
-  ellipse.drawEllipse(point.x, point.y, mass+5, mass);*/
 };
   
 Universe.prototype.addEmitter = function(field, key) {
