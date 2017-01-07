@@ -2,6 +2,10 @@
 
 A new game I am creating using Phaser.io and a particles library that I converted over from [jsoverson's Javascript-Particle-System](https://github.com/jsoverson/JavaScript-Particle-System).
 
+## Demo
+
+https://two70.github.io/zero_harvest/
+
 ## Installation
 
 TODO: Integrate nodejs
